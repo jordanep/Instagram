@@ -22,10 +22,20 @@ public class LoginActivity extends AppCompatActivity {
     private Button bLogin;
     private Button bSignup;
 
+    private ParseUser currentUser = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        currentUser = ParseUser.getCurrentUser();
+
+        if (currentUser != null) {
+            final Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            return;
+        }
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
