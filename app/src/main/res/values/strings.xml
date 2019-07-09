@@ -11,4 +11,5 @@
     <string name="or">OR</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="log_out">LOG OUT</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.instagram;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.instagram.models.Post;
@@ -29,6 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     private EditText etDescription;
     private Button bCreate;
     private Button bRefresh;
+    private Button bLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         etDescription = findViewById(R.id.etDescription);
         bCreate = findViewById(R.id.bCreate);
         bRefresh = findViewById(R.id.bRefresh);
+        bLogout = findViewById(R.id.bLogout);
 
         bCreate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +59,13 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 loadTopPosts();
+            }
+        });
+
+        bLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
             }
         });
 
@@ -100,6 +110,14 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void logout() {
+        ParseUser.logOut();
+
+        final Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
