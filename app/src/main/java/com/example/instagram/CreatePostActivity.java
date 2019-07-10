@@ -92,6 +92,10 @@ public class CreatePostActivity extends AppCompatActivity {
                 }
             }
         });
+
+        final Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void launchCamera() {
@@ -145,7 +149,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 // RESIZE BITMAP, see section below
                 Uri takenPhotoUri = Uri.fromFile(getPhotoFileUri(photoFileName));
                 // by this point we have the camera photo on disk
-                Bitmap rawTakenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
+                //Bitmap rawTakenImage = BitmapFactory.decodeFile(takenPhotoUri.getPath());
                 Bitmap rotatedBitmap = rotateBitmapOrientation(takenPhotoUri.getPath());
                 // See BitmapScaler.java: https://gist.github.com/nesquena/3885707fd3773c09f1bb
                 Bitmap resizedBitmap = BitmapScaler.scaleToFitWidth(rotatedBitmap,
@@ -169,7 +173,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 }
                 imagePath = resizedFile.getPath();
                 int width = resizedBitmap.getWidth();
-                int height = resizedBitmap.getHeight();
+                //int height = resizedBitmap.getHeight();
                 Bitmap cropImg = Bitmap.createBitmap(resizedBitmap, 0, 0, width, width);
                 // Load the taken image into a preview
                 ivPreview.setImageBitmap(cropImg);

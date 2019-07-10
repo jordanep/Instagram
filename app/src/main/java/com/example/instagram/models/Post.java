@@ -41,7 +41,7 @@ public class Post extends ParseObject {
             super(Post.class);
         }
         public Query getTop() {
-            setLimit(20);
+            setLimit(30);
             return this;
         }
         public Query withUser() {
