@@ -15,10 +15,12 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -44,6 +46,9 @@ public class HomeActivity extends AppCompatActivity {
     private RecyclerView rvPosts;
     private PostAdapter adapter;
     private ArrayList<Post> posts;
+    private SwipeRefreshLayout swipeContainer;
+
+    public static final int CREATE_POST_REQUEST_CODE = 42;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
         bLogout = findViewById(R.id.bLogout);
         bCreatePost = findViewById(R.id.bCreatePost);
         rvPosts = findViewById(R.id.rvPosts);
+        swipeContainer = findViewById(R.id.swipeContainer);
 
         posts = new ArrayList<>();
         adapter = new PostAdapter(posts);
@@ -79,12 +85,28 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final Intent intent = new Intent(HomeActivity.this, CreatePostActivity.class);
-                startActivity(intent);
-                finish();
+                startActivityForResult(intent, CREATE_POST_REQUEST_CODE);
             }
         });
 
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadTopPosts();
+            }
+        });
+        swipeContainer.setColorSchemeResources(android.R.color.darker_gray);
+
         loadTopPosts();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == CREATE_POST_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+
+            }
+        }
     }
 
     private void loadTopPosts() {
@@ -95,13 +117,15 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
-                    for (int i = objects.size() - 1; i >= 0; i--) {
+                    adapter.clear();
+                    for (int i = 0; i < objects.size(); i++) {
                         Log.d("HomeActivity", "\nPost[" + i + "] = "
                                 + objects.get(i).getDescription()
                                 + ", username = " + objects.get(i).getUser().getUsername());
                         posts.add(objects.get(i));
                         adapter.notifyItemInserted(posts.size() - 1);
                     }
+                    swipeContainer.setRefreshing(false);
 
                 } else {
                     e.printStackTrace();

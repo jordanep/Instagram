@@ -21,6 +21,7 @@ import com.parse.ParseFile;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
@@ -55,33 +56,18 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 .placeholder(R.drawable.camera_shadow_fill)
                 .error(R.drawable.camera_shadow_fill)
                 .into(holder.ivPhoto);
-        //loadImages(image, holder.ivPhoto);
-        /*File imageFile = null;
-        try {
-            imageFile = image.getFile();
-            Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getPath());
-            holder.ivPhoto.setImageBitmap(imageBitmap);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
     }
 
-    /*private void loadImages(ParseFile thumbnail, final ImageView img) {
+    public void clear() {
+        posts.clear();
+        notifyDataSetChanged();
+    }
 
-        if (thumbnail != null) {
-            thumbnail.getDataInBackground(new GetDataCallback() {
-                @Override
-                public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        img.setImageBitmap(bmp);
-                    } else {
-                    }
-                }
-            });
-        } else {
-        }
-    }*/
+    // Add a list of items -- change to type used
+    public void addAll(List<Post> list) {
+        posts.addAll(list);
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {

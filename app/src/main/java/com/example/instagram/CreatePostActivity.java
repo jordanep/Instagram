@@ -25,6 +25,7 @@ import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -86,6 +87,8 @@ public class CreatePostActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     Log.d("HomeActivity", "Create post success");
+                    Intent intent = new Intent(CreatePostActivity.this, HomeActivity.class);
+                    startActivity(intent);
                 } else {
                     Log.e("HomeActivity", "Error creating post");
                     e.printStackTrace();
@@ -93,9 +96,8 @@ public class CreatePostActivity extends AppCompatActivity {
             }
         });
 
-        final Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-        finish();
+
+
     }
 
     public void launchCamera() {
