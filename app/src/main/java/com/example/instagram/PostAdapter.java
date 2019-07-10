@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.Layout;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.instagram.models.Post;
 import com.parse.GetDataCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
@@ -46,6 +49,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Post post = posts.get(position);
         holder.tvUsername.setText(post.getUser().getUsername());
         holder.tvDescription.setText(post.getDescription());
+
+        String dateString = post.getCreatedAt().toString();
+        String relativeTime = getRelativeTimeAgo(dateString);
+        holder.tvTime.setText(relativeTime);
 
         ParseFile image = post.getImage();
         String imageUrl = image.getUrl();
@@ -74,11 +81,28 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return posts.size();
     }
 
+    public String getRelativeTimeAgo(String rawTimeString) {
+        String timeFormat = "EEE MMM dd HH:mm:ss zzz yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(timeFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(rawTimeString).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return relativeDate;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivPhoto;
         TextView tvUsername;
         TextView tvDescription;
+        TextView tvTime;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -86,6 +110,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             ivPhoto = itemView.findViewById(R.id.ivPhoto);
             tvUsername = itemView.findViewById(R.id.tvUsername);
             tvDescription = itemView.findViewById(R.id.tvDescription);
+            tvTime = itemView.findViewById(R.id.tvTime);
         }
     }
 }
