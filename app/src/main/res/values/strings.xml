@@ -13,4 +13,7 @@
     <string name="prompt_confirm_password">Confirm Password</string>
     <string name="log_out">LOG OUT</string>
     <string name="take_photo">TAKE PHOTO</string>
+    <string name="post_username">username</string>
+    <string name="post_description">description</string>
+    <string name="create_post">CREATE POST</string>
 </resources>
