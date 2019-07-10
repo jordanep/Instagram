@@ -4,12 +4,13 @@
     <string name="prompt_password">Password</string>
     <string name="prompt_username">Username</string>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="prompt_description">Description</string>
-    <string name="create">Create</string>
+    <string name="prompt_description">Add a caption</string>
+    <string name="post">Post</string>
     <string name="refresh">Refresh</string>
     <string name="sign_up">SIGN UP</string>
     <string name="or">OR</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_confirm_password">Confirm Password</string>
     <string name="log_out">LOG OUT</string>
+    <string name="take_photo">TAKE PHOTO</string>
 </resources>
