@@ -40,7 +40,6 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private Button bRefresh;
     private Button bLogout;
     private Button bCreatePost;
     private RecyclerView rvPosts;
@@ -55,7 +54,6 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        bRefresh = findViewById(R.id.bRefresh);
         bLogout = findViewById(R.id.bLogout);
         bCreatePost = findViewById(R.id.bCreatePost);
         rvPosts = findViewById(R.id.rvPosts);
@@ -66,13 +64,6 @@ public class HomeActivity extends AppCompatActivity {
 
         rvPosts.setLayoutManager(new LinearLayoutManager(this));
         rvPosts.setAdapter(adapter);
-
-        bRefresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadTopPosts();
-            }
-        });
 
         bLogout.setOnClickListener(new View.OnClickListener() {
             @Override

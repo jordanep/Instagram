@@ -56,7 +56,9 @@ public class SignupActivity extends AppCompatActivity {
 
         if (password.equals(confirm_password)) {
             return true;
-        } else { return false; }
+        } else {
+            return false;
+        }
     }
 
     private void signup(String username, String password, String email) {

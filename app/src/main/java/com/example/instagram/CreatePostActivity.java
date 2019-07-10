@@ -97,7 +97,6 @@ public class CreatePostActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     public void launchCamera() {
@@ -131,7 +130,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 "HomeActivity");
 
         // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
             Log.e("HomeActivity", "Failed to create directory");
         }
 

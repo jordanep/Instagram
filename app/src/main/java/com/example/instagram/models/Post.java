@@ -41,11 +41,13 @@ public class Post extends ParseObject {
         public Query() {
             super(Post.class);
         }
+
         public Query getTop() {
             setLimit(20);
             addDescendingOrder(KEY_CREATED_AT);
             return this;
         }
+
         public Query withUser() {
             include(KEY_USER);
             return this;
