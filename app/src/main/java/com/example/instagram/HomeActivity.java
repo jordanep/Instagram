@@ -124,9 +124,9 @@ public class HomeActivity extends AppCompatActivity {
             public void done(List<Post> objects, ParseException e) {
                 if (e == null) {
                     for (int i = 0; i < objects.size(); i++) {
-                        Log.d("HomeActivity", "Post[" + i + "] = "
+                        Log.d("HomeActivity", "\nPost[" + i + "] = "
                                 + objects.get(i).getDescription()
-                                + "\nusername = " + objects.get(i).getUser().getUsername());
+                                + ", username = " + objects.get(i).getUser().getUsername());
                     }
 
                 } else {
