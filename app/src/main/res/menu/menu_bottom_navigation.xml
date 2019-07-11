@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:enabled="true"
+        android:icon="@drawable/home_icon"
+        android:iconTint="@android:color/black"
+        android:title=""
+        app:showAsAction="always" />
+    <!--<item
+        android:id="@+id/search"
+        android:enabled="true"
+        android:icon="@drawable/search_icon"
+        android:title=""
+        app:showAsAction="always" />-->
+    <item
+        android:id="@+id/add"
+        android:enabled="true"
+        android:icon="@drawable/add_icon"
+        android:iconTint="@android:color/black"
+        android:title=""
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/notifications"
+        android:enabled="true"
+        android:icon="@drawable/notifications_icon"
+        android:iconTint="@android:color/black"
+        android:title=""
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/profile"
+        android:enabled="true"
+        android:icon="@drawable/profile_icon"
+        android:iconTint="@android:color/black"
+        android:title=""
+        app:showAsAction="always" />
+</menu>
