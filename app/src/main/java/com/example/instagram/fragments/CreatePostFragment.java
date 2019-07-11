@@ -26,8 +26,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.instagram.BitmapScaler;
-import com.example.instagram.CreatePostActivity;
-import com.example.instagram.HomeActivity;
+//import com.example.instagram.CreatePostActivity;
+//import com.example.instagram.HomeActivity;
 import com.example.instagram.MainActivity;
 import com.example.instagram.R;
 import com.example.instagram.models.Post;
@@ -44,6 +44,8 @@ import java.io.IOException;
 import static android.app.Activity.RESULT_OK;
 
 public class CreatePostFragment extends Fragment {
+
+    public static final String TAG = "CreatePostFragment";
 
     private String imagePath;
     private EditText etDescription;
@@ -101,16 +103,20 @@ public class CreatePostFragment extends Fragment {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.d("HomeActivity", "Create post success");
                     Fragment homeFragment = getFragmentManager()
                             .findFragmentByTag(MainActivity.HOME_FRAGMENT_TAG);
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.flPlaceholder, homeFragment)
-                            .commit();
-                    //Intent intent = new Intent(getContext(), HomeActivity.class);
-                    //startActivity(intent);
+                    if (homeFragment != null) {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.flPlaceholder, homeFragment)
+                                .commit();
+                    } else {
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.flPlaceholder, MainActivity.homeFragment,
+                                        MainActivity.HOME_FRAGMENT_TAG)
+                                .commit();
+                    }
                 } else {
-                    Log.e("HomeActivity", "Error creating post");
+                    Log.e(TAG, "Error creating post");
                     e.printStackTrace();
                 }
             }
@@ -147,11 +153,11 @@ public class CreatePostFragment extends Fragment {
         // Use `getExternalFilesDir` on Context to access package-specific directories.
         // This way, we don't need to request external read/write runtime permissions.
         File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                "HomeActivity");
+                TAG);
 
         // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
-            Log.e("HomeActivity", "Failed to create directory");
+            Log.e(TAG, "Failed to create directory");
         }
 
         // Return the file target for the photo based on filename
@@ -189,7 +195,7 @@ public class CreatePostFragment extends Fragment {
                     fos.write(bytes.toByteArray());
                     fos.close();
                 } catch (IOException e) {
-                    Log.e("HomeActivity", "Error resizing image");
+                    Log.e(TAG, "Error resizing image");
                     e.printStackTrace();
                 }
                 imagePath = resizedFile.getPath();
@@ -201,8 +207,7 @@ public class CreatePostFragment extends Fragment {
                 etDescription.setVisibility(View.VISIBLE);
                 bPost.setVisibility(View.VISIBLE);
             } else { // Result was a failure
-                Toast.makeText(getContext(), "Picture wasn't taken!",
-                        Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Error taking photo");
             }
         }
     }

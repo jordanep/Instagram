@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
 
     public FragmentManager fragmentManager;
-    public Fragment homeFragment;
+    public static HomeFragment homeFragment;
     public Fragment createPostFragment;
     public Fragment notificationsFragment;
     public Fragment profileFragment;
@@ -42,22 +42,37 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.home:
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.flPlaceholder, homeFragment, HOME_FRAGMENT_TAG)
-                                .commit();
-                        break;
-                    case R.id.createPost:
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.flPlaceholder, createPostFragment,
-                                        CREATE_POST_FRAGMENT_TAG)
-                                .commit();
-                        break;
-                    /*case R.id.notifications:
-                        *//*fragmentManager.beginTransaction()
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                        Fragment fragment;
+                        switch (menuItem.getItemId()) {
+                            case R.id.home:
+                                fragment = fragmentManager.findFragmentByTag(HOME_FRAGMENT_TAG);
+                                if (fragment != null) {
+                                    fragmentManager.beginTransaction()
+                                            .replace(R.id.flPlaceholder, fragment)
+                                            .commit();
+                                } else {
+                                    fragmentManager.beginTransaction()
+                                            .replace(R.id.flPlaceholder, homeFragment, HOME_FRAGMENT_TAG)
+                                            .commit();
+                                }
+                                break;
+                            case R.id.createPost:
+                                fragment = fragmentManager.findFragmentByTag(CREATE_POST_FRAGMENT_TAG);
+                                if (fragment != null) {
+                                    fragmentManager.beginTransaction()
+                                            .replace(R.id.flPlaceholder, fragment)
+                                            .commit();
+                                } else {
+                                    fragmentManager.beginTransaction()
+                                            .replace(R.id.flPlaceholder, createPostFragment,
+                                                    CREATE_POST_FRAGMENT_TAG)
+                                            .commit();
+                                }
+                                break;
+                            /*case R.id.notifications:
+                             *//*fragmentManager.beginTransaction()
                                 .replace(R.id.flPlaceholder, notificationsFragment,
                                         NOTIFICATIONS_FRAGMENT_TAG)
                                 .commit();*//*
@@ -68,12 +83,14 @@ public class MainActivity extends AppCompatActivity {
                                         PROFILE_FRAGMENT_TAG)
                                 .commit();*//*
                         break;*/
-                    default:
-                        return false;
-                }
-                return true;
-            }
-        });
+                            default:
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.flPlaceholder, homeFragment, HOME_FRAGMENT_TAG)
+                                        .commit();
+                        }
+                        return true;
+                    }
+                });
         bottomNavigationView.setSelectedItemId(R.id.home);
 
     }

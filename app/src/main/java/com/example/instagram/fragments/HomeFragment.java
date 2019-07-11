@@ -18,7 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.instagram.CreatePostActivity;
+//import com.example.instagram.CreatePostActivity;
 import com.example.instagram.LoginActivity;
 import com.example.instagram.PostAdapter;
 import com.example.instagram.R;
@@ -88,15 +88,13 @@ public class HomeFragment extends Fragment {
                 if (e == null) {
                     adapter.clear();
                     for (int i = 0; i < objects.size(); i++) {
-                        Log.d(TAG, "\nPost[" + i + "] = "
-                                + objects.get(i).getDescription()
-                                + ", username = " + objects.get(i).getUser().getUsername());
                         posts.add(objects.get(i));
                         adapter.notifyItemInserted(posts.size() - 1);
                     }
                     swipeContainer.setRefreshing(false);
 
                 } else {
+                    Log.e(TAG, "Error loading top posts");
                     e.printStackTrace();
                 }
             }

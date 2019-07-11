@@ -1,3 +1,4 @@
+/*
 package com.example.instagram;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -213,3 +214,4 @@ public class CreatePostActivity extends AppCompatActivity {
         return rotatedBitmap;
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.example.instagram;
 
 import android.content.Intent;
@@ -122,3 +123,4 @@ public class HomeActivity extends AppCompatActivity {
         finish();
     }
 }
+*/
