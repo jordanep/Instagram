@@ -28,20 +28,24 @@ import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-    ArrayList<Post> posts;
-    Context context;
+    private ArrayList<Post> posts;
+    private Context context;
 
-    public PostAdapter(ArrayList<Post> posts) {
+    public PostAdapter(ArrayList<Post> posts, Context context) {
         this.posts = posts;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.item_post, parent, false);
+        return new ViewHolder(view);
+        /*context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View postView = inflater.inflate(R.layout.item_post, parent, false);
-        return new ViewHolder(postView);
+        return new ViewHolder(postView);*/
     }
 
     @Override
@@ -67,12 +71,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public void clear() {
         posts.clear();
-        notifyDataSetChanged();
-    }
-
-    // Add a list of items -- change to type used
-    public void addAll(List<Post> list) {
-        posts.addAll(list);
         notifyDataSetChanged();
     }
 

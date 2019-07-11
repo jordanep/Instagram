@@ -15,7 +15,7 @@
         android:title=""
         app:showAsAction="always" />-->
     <item
-        android:id="@+id/add"
+        android:id="@+id/createPost"
         android:enabled="true"
         android:icon="@drawable/add_icon"
         android:iconTint="@android:color/black"

@@ -1,80 +1,69 @@
-package com.example.instagram;
+package com.example.instagram.fragments;
 
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.example.instagram.models.Post;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import com.example.instagram.CreatePostActivity;
+import com.example.instagram.LoginActivity;
+import com.example.instagram.PostAdapter;
+import com.example.instagram.R;
+import com.example.instagram.models.Post;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeFragment extends Fragment {
+
+    public static final String TAG = "HomeFragment";
 
     private Button bLogout;
-    private Button bCreatePost;
     private RecyclerView rvPosts;
     private PostAdapter adapter;
     private ArrayList<Post> posts;
     private SwipeRefreshLayout swipeContainer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_home, container, false);
+    }
 
-        bLogout = findViewById(R.id.bLogout);
-        bCreatePost = findViewById(R.id.bCreatePost);
-        rvPosts = findViewById(R.id.rvPosts);
-        swipeContainer = findViewById(R.id.swipeContainer);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        bLogout = view.findViewById(R.id.bLogout);
+        rvPosts = view.findViewById(R.id.rvPosts);
+        swipeContainer = view.findViewById(R.id.swipeContainer);
 
         posts = new ArrayList<>();
-        adapter = new PostAdapter(posts, this);
+        adapter = new PostAdapter(posts, getContext());
 
-        rvPosts.setLayoutManager(new LinearLayoutManager(this));
         rvPosts.setAdapter(adapter);
+        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
 
         bLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 logout();
-            }
-        });
-
-        bCreatePost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Intent intent = new Intent(HomeActivity.this, CreatePostActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -99,7 +88,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (e == null) {
                     adapter.clear();
                     for (int i = 0; i < objects.size(); i++) {
-                        Log.d("HomeActivity", "\nPost[" + i + "] = "
+                        Log.d(TAG, "\nPost[" + i + "] = "
                                 + objects.get(i).getDescription()
                                 + ", username = " + objects.get(i).getUser().getUsername());
                         posts.add(objects.get(i));
@@ -117,8 +106,8 @@ public class HomeActivity extends AppCompatActivity {
     private void logout() {
         ParseUser.logOut();
 
-        final Intent intent = new Intent(this, LoginActivity.class);
+        final Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
-        finish();
+        getActivity().finish();
     }
 }

@@ -1,8 +1,6 @@
-package com.example.instagram;
+package com.example.instagram.fragments;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,28 +8,42 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.instagram.BitmapScaler;
+import com.example.instagram.CreatePostActivity;
+import com.example.instagram.HomeActivity;
+import com.example.instagram.MainActivity;
+import com.example.instagram.R;
 import com.example.instagram.models.Post;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class CreatePostActivity extends AppCompatActivity {
+import static android.app.Activity.RESULT_OK;
+
+public class CreatePostFragment extends Fragment {
 
     private String imagePath;
     private EditText etDescription;
@@ -44,14 +56,19 @@ public class CreatePostActivity extends AppCompatActivity {
     File photoFile;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_post);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_create_post, container, false);
+    }
 
-        etDescription = findViewById(R.id.etDescription);
-        bPost = findViewById(R.id.bPost);
-        ivPreview = findViewById(R.id.ivPreview);
-        bTakePhoto = findViewById(R.id.bTakePhoto);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        etDescription = view.findViewById(R.id.etDescription);
+        bPost = view.findViewById(R.id.bPost);
+        ivPreview = view.findViewById(R.id.ivPreview);
+        bTakePhoto = view.findViewById(R.id.bTakePhoto);
 
         bPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,8 +102,13 @@ public class CreatePostActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     Log.d("HomeActivity", "Create post success");
-                    Intent intent = new Intent(CreatePostActivity.this, HomeActivity.class);
-                    startActivity(intent);
+                    Fragment homeFragment = getFragmentManager()
+                            .findFragmentByTag(MainActivity.HOME_FRAGMENT_TAG);
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.flPlaceholder, homeFragment)
+                            .commit();
+                    //Intent intent = new Intent(getContext(), HomeActivity.class);
+                    //startActivity(intent);
                 } else {
                     Log.e("HomeActivity", "Error creating post");
                     e.printStackTrace();
@@ -106,14 +128,14 @@ public class CreatePostActivity extends AppCompatActivity {
         // wrap File object into a content provider
         // required for API >= 24
         // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
-        Uri fileProvider = FileProvider.getUriForFile(this,
+        Uri fileProvider = FileProvider.getUriForFile(getContext(),
                 "com.example.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
 
         // If you call startActivityForResult() using an intent that
         // no app can handle, your app will crash.
         // So as long as the result is not null, it's safe to use the intent.
-        if (intent.resolveActivity(getPackageManager()) != null) {
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
             // Start the image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
@@ -124,7 +146,7 @@ public class CreatePostActivity extends AppCompatActivity {
         // Get safe storage directory for photos
         // Use `getExternalFilesDir` on Context to access package-specific directories.
         // This way, we don't need to request external read/write runtime permissions.
-        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                 "HomeActivity");
 
         // Create the storage directory if it does not exist
@@ -179,7 +201,7 @@ public class CreatePostActivity extends AppCompatActivity {
                 etDescription.setVisibility(View.VISIBLE);
                 bPost.setVisibility(View.VISIBLE);
             } else { // Result was a failure
-                Toast.makeText(this, "Picture wasn't taken!",
+                Toast.makeText(getContext(), "Picture wasn't taken!",
                         Toast.LENGTH_SHORT).show();
             }
         }
