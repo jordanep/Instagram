@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.instagram.fragments.CreatePostFragment;
 import com.example.instagram.fragments.HomeFragment;
+import com.example.instagram.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
         createPostFragment = new CreatePostFragment();
+        profileFragment = new ProfileFragment();
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
@@ -72,17 +74,24 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 break;
                             /*case R.id.notifications:
-                             *//*fragmentManager.beginTransaction()
-                                .replace(R.id.flPlaceholder, notificationsFragment,
-                                        NOTIFICATIONS_FRAGMENT_TAG)
-                                .commit();*//*
-                        break;
-                    case R.id.profile:
-                        *//*fragmentManager.beginTransaction()
-                                .replace(R.id.flPlaceholder, profileFragment,
-                                        PROFILE_FRAGMENT_TAG)
-                                .commit();*//*
-                        break;*/
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.flPlaceholder, notificationsFragment,
+                                                NOTIFICATIONS_FRAGMENT_TAG)
+                                        .commit();
+                                break;*/
+                            case R.id.profile:
+                                fragment = fragmentManager.findFragmentByTag(PROFILE_FRAGMENT_TAG);
+                                if (fragment != null) {
+                                    fragmentManager.beginTransaction()
+                                            .replace(R.id.flPlaceholder, fragment)
+                                            .commit();
+                                } else {
+                                    fragmentManager.beginTransaction()
+                                            .replace(R.id.flPlaceholder, profileFragment,
+                                                    PROFILE_FRAGMENT_TAG)
+                                            .commit();
+                                }
+                                break;
                             default:
                                 fragmentManager.beginTransaction()
                                         .replace(R.id.flPlaceholder, homeFragment, HOME_FRAGMENT_TAG)
